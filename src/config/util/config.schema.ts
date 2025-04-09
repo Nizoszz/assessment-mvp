@@ -11,6 +11,10 @@ export const databaseSchema = z.object({
   username: z.string(),
 });
 
+export const openAiSchema = z.object({
+  key: z.string().startsWith('sk-proj'),
+});
+
 export const configSchema = z.object({
   env: environmentSchema,
   database: databaseSchema,
