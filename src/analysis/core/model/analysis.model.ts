@@ -4,11 +4,11 @@ export class AnalysisModel {
   analysisId: string;
   resumeText: string;
   jobText: string;
-  analysis: string;
+  analysisResult: AnalysisModelType;
   matchScore: string;
   createdAt: Date;
   constructor(data: AnalysisModel) {
-    Object.assign(data);
+    Object.assign(this, data);
   }
   static create(
     data: Omit<AnalysisModel, 'analysisId' | 'createdAt'>,
@@ -18,9 +18,21 @@ export class AnalysisModel {
       analysisId: id,
       resumeText: data.resumeText,
       jobText: data.jobText,
-      analysis: data.analysis,
+      analysisResult: data.analysisResult,
       matchScore: data.matchScore,
       createdAt: new Date(),
     });
   }
 }
+
+type AnalysisModelType = {
+  classification: 'Baixo' | 'Médio' | 'Alto';
+  strongPoints: string[];
+  pointsToImprove: AnalysisModelTypePointsToImprove[];
+  resumeSuggestions: string[];
+};
+
+type AnalysisModelTypePointsToImprove = {
+  description: string;
+  studyRecommendation: string;
+};
