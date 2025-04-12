@@ -11,12 +11,13 @@ export const databaseSchema = z.object({
   username: z.string(),
 });
 
-export const openAiSchema = z.object({
-  key: z.string().startsWith('sk-proj'),
+export const cohereApiSchema = z.object({
+  key: z.string(),
 });
 
 export const configSchema = z.object({
   env: environmentSchema,
   database: databaseSchema,
   port: z.coerce.number().positive().int(),
+  cohereApi: cohereApiSchema,
 });
