@@ -14,8 +14,8 @@ export const factory = (): Config => {
       url: process.env.DATABASE_URL,
       username: process.env.DATABASE_USERNAME,
     },
-    openAiSecret: {
-      key: process.env.OPENAI_API_KEY,
+    cohereApi: {
+      key: process.env.COHERE_API_KEY,
     },
   });
 
