@@ -3,7 +3,7 @@
 /node_modules
 /build
 .data
-
+prompts/
 # Logs
 logs
 *.log
