@@ -45,7 +45,7 @@ export default class MatchingAnalyzerController {
       },
     }),
   )
-  @UseInterceptors(new RestResponseInterceptor(AnalyseResultResponseDto))
+  // @UseInterceptors(new RestResponseInterceptor(AnalyseResultResponseDto))
   async analysis(
     @UploadedFile() file: Express.Multer.File,
     @Body() data: AnalyseRequestDto,
@@ -62,15 +62,15 @@ export default class MatchingAnalyzerController {
         resumeText,
         jobText,
       });
-
-      return {
-        classification: result.analysisResult.classification,
-        strongPoints: result.analysisResult.strongPoints,
-        pointsToImprove: result.analysisResult.pointsToImprove,
-        resumeSuggestions: result.analysisResult.resumeSuggestions,
-        matchScore: result.matchScore,
-        createdAt: new Date(result.createdAt).toLocaleString('pt-BR'),
-      };
+      return;
+      // return {
+      //   classification: result.analysisResult.classification,
+      //   strongPoints: result.analysisResult.strongPoints,
+      //   pointsToImprove: result.analysisResult.pointsToImprove,
+      //   resumeSuggestions: result.analysisResult.resumeSuggestions,
+      //   matchScore: result.matchScore,
+      //   createdAt: new Date(result.createdAt).toLocaleString('pt-BR'),
+      // };
     } finally {
       fs.unlink(file.path, (err) => {
         if (err) {

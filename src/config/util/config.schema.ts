@@ -11,13 +11,22 @@ export const databaseSchema = z.object({
   username: z.string(),
 });
 
-export const cohereApiSchema = z.object({
+export const groqApiSchema = z.object({
   key: z.string(),
+});
+
+export const promptSchema = z.object({
+  generateMatch: z.string().startsWith('./prompts/'),
+  generateScoreInit: z.string().startsWith('./prompts/'),
+  generateScoreFinal: z.string().startsWith('./prompts/'),
+  resumeCurriculumInit: z.string().startsWith('./prompts/'),
+  resumeCurriculumFinal: z.string().startsWith('./prompts/'),
 });
 
 export const configSchema = z.object({
   env: environmentSchema,
   database: databaseSchema,
   port: z.coerce.number().positive().int(),
-  cohereApi: cohereApiSchema,
+  prompt: promptSchema,
+  groqApi: groqApiSchema,
 });

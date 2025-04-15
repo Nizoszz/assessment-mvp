@@ -14,8 +14,15 @@ export const factory = (): Config => {
       url: process.env.DATABASE_URL,
       username: process.env.DATABASE_USERNAME,
     },
-    cohereApi: {
-      key: process.env.COHERE_API_KEY,
+    groqApi: {
+      key: process.env.GROQ_API_KEY,
+    },
+    prompt: {
+      generateMatch: process.env.PROMPT_SYSTEM_GENERATE_MATCH,
+      generateScoreInit: process.env.PROMPT_SYSTEM_GENERATE_SCORE_INIT,
+      generateScoreFinal: process.env.PROMPT_SYSTEM_GENERATE_SCORE_FINAL,
+      resumeCurriculumInit: process.env.PROMPT_SYSTEM_RESUME_CURRICULO_INIT,
+      resumeCurriculumFinal: process.env.PROMPT_SYSTEM_RESUME_CURRICULO_FINAL,
     },
   });
 
