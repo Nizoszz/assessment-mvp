@@ -5,7 +5,6 @@ export class AnalysisModel {
   resumeText: string;
   jobText: string;
   analysisResult: AnalysisModelType;
-  matchScore: string;
   createdAt: Date;
   constructor(data: AnalysisModel) {
     Object.assign(this, data);
@@ -19,13 +18,13 @@ export class AnalysisModel {
       resumeText: data.resumeText,
       jobText: data.jobText,
       analysisResult: data.analysisResult,
-      matchScore: data.matchScore,
       createdAt: new Date(),
     });
   }
 }
 
 type AnalysisModelType = {
+  score: number;
   classification: 'Baixo' | 'Médio' | 'Alto';
   strongPoints: string[];
   pointsToImprove: AnalysisModelTypePointsToImprove[];

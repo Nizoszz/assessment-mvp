@@ -9,22 +9,35 @@ export class ExternalAnalyseProcessing {
   getAnalyse = async (
     curriculumRaw: string,
     resumeJobText: string,
-  ): Promise<{ analysis: string; matchScore: string } | undefined> => {
+  ): Promise<AnalyseType | undefined> => {
     const resumeCurriculum = await this.resumeCurriculumGenerate(curriculumRaw);
     const matchScore = await this.generateScore(
       resumeCurriculum,
       resumeJobText,
     );
+
     if (!matchScore) {
       return undefined;
     }
-    const match = await this.matchGenerate(resumeCurriculum, resumeJobText);
-    if (!match) {
+    const matchGenerate = await this.matchGenerate(
+      resumeCurriculum,
+      resumeJobText,
+    );
+    if (!matchGenerate) {
+      return undefined;
+    }
+    const extractRecruitView = this.extractRecruitView(
+      matchGenerate.toString(),
+    );
+    if (!extractRecruitView) {
       return undefined;
     }
     return {
-      analysis: match.toString(),
-      matchScore: matchScore,
+      analysis: matchGenerate.toString(),
+      matchScore: matchScore.toString(),
+      alignment: extractRecruitView.alignment,
+      misalignment: extractRecruitView.misalignment,
+      attention: extractRecruitView.attention,
     };
   };
   private generateResponse = async (prompt: string) => {
@@ -92,7 +105,10 @@ export class ExternalAnalyseProcessing {
     return null;
   };
 
-  private matchGenerate = (resumeCurriculum: string, resumeJobText: string) => {
+  private matchGenerate = async (
+    resumeCurriculum: string,
+    resumeJobText: string,
+  ) => {
     const init = this.configService.get('prompt').generateMatch;
     const prompt = `
       ${fs.readFileSync(init!, 'utf-8')}
@@ -103,7 +119,76 @@ export class ExternalAnalyseProcessing {
       ${resumeJobText}
     `;
 
-    const response = this.generateResponse(prompt);
+    const response = await this.generateResponse(prompt);
     return response;
   };
+  private extractRecruitView = (data: string) => {
+    try {
+      const attempt1Regex =
+        /### \*\*1\. PONTOS DE ALINHAMENTO\*\*([\s\S]*?)### \*\*2\. PONTOS DE DESALINHAMENTO\*\*([\s\S]*?)### \*\*3\. PONTOS DE ATENÇÃO\*\*([\s\S]*?)(?=(\n###|\n##|\n\*\*attemptE|\n---|$))/;
+      const match = data.match(attempt1Regex);
+      if (match) {
+        const alignment = match[1].trim();
+        const misalignment = match[2].trim();
+        const attention = match[3].trim();
+
+        return {
+          alignment,
+          misalignment,
+          attention,
+        };
+      }
+      const attemp2Regex =
+        /### PONTOS DE ALINHAMENTO([\s\S]*?)### PONTOS DE DESALINHAMENTO([\s\S]*?)### PONTOS DE ATENÇÃO([\s\S]*?)(?=\n?\*\*PARTE 2|\Z)/;
+      const attempt2 = data.match(attemp2Regex);
+      if (attempt2) {
+        const alignment = attempt2[1].trim();
+        const misalignment = attempt2[2].trim();
+        const attention = attempt2[3].trim();
+        return {
+          alignment,
+          misalignment,
+          attention,
+        };
+      }
+      const attemp3Regex =
+        /### 1\. PONTOS DE ALINHAMENTO([\s\S]*?)### 2\. PONTOS DE DESALINHAMENTO([\s\S]*?)### 3\. PONTOS DE ATENÇÃO([\s\S]*?)(?=\n?\*\*PARTE 2|\Z)/;
+      const attempt3 = data.match(attemp3Regex);
+      if (attempt3) {
+        const alignment = attempt3[1].trim();
+        const misalignment = attempt3[2].trim();
+        const attention = attempt3[3].trim();
+
+        return {
+          alignment,
+          misalignment,
+          attention,
+        };
+      }
+      const attemp4Regex =
+        /### \*\*PONTOS DE ALINHAMENTO\*\*\n*([\s\S]*|\?)### \*\*PONTOS DE DESALINHAMENTO\*\*\n*([\s\S]*?)### \*\*PONTOS DE ATENÇÃO\*\*\n*([\s\S]*?)(?=\n?-|\Z)/;
+      const attempt4 = data.match(attemp4Regex);
+      if (attempt4) {
+        const alignment = attempt4[1].trim();
+        const misalignment = attempt4[2].trim();
+        const attention = attempt4[3].trim();
+        return {
+          alignment,
+          misalignment,
+          attention,
+        };
+      }
+    } catch (error) {
+      console.error('Erro ao extrair dados:', error);
+      return null;
+    }
+  };
 }
+
+type AnalyseType = {
+  analysis: string;
+  matchScore: string;
+  alignment: string;
+  misalignment: string;
+  attention: string;
+};

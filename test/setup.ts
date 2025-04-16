@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import fs from 'fs';
+import * as fs from 'fs';
 
 const testEnvFile = `.env.test`;
 const envFile = `.env`;

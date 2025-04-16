@@ -4,7 +4,9 @@ export default {
   testEnvironment: 'node',
   moduleNameMapper: {
     '^@src/(.*)$': '<rootDir>/src/$1',
-    '^@testInfra/(.*)$': '<rootDir>/test/$1',
+    '^@test/(.*)$': '<rootDir>/test/$1',
+    '^@configModule/(.*)$': '<rootDir>/src/config/$1',
+    '^@analysisModule/(.*)$': '<rootDir>/src/analysis/$1',
   },
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',

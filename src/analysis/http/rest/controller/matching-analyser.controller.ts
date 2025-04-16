@@ -18,7 +18,7 @@ import { AnalyseResultResponseDto } from '../dto/response/analyse-response.dto';
 import { RestResponseInterceptor } from '../../interceptor/rest-response.interceptor';
 
 @Controller('chat')
-export default class MatchingAnalyzerController {
+export class MatchingAnalyzerController {
   constructor(private readonly service: CurriculumAnalysisService) {}
   @Post('matching-analysis')
   @UseInterceptors(
@@ -45,7 +45,7 @@ export default class MatchingAnalyzerController {
       },
     }),
   )
-  // @UseInterceptors(new RestResponseInterceptor(AnalyseResultResponseDto))
+  @UseInterceptors(new RestResponseInterceptor(AnalyseResultResponseDto))
   async analysis(
     @UploadedFile() file: Express.Multer.File,
     @Body() data: AnalyseRequestDto,
@@ -58,22 +58,24 @@ export default class MatchingAnalyzerController {
       const parsed = await pdfParse(pdfBuffer);
       const resumeText = parsed.text.trim();
       const jobText = data.jobDescription;
+
       const result = await this.service.analyseProcess({
         resumeText,
         jobText,
       });
-      return;
-      // return {
-      //   classification: result.analysisResult.classification,
-      //   strongPoints: result.analysisResult.strongPoints,
-      //   pointsToImprove: result.analysisResult.pointsToImprove,
-      //   resumeSuggestions: result.analysisResult.resumeSuggestions,
-      //   matchScore: result.matchScore,
-      //   createdAt: new Date(result.createdAt).toLocaleString('pt-BR'),
-      // };
+
+      const output = {
+        strongPoints: result.analysisResult.strongPoints,
+        pointsToImprove: result.analysisResult.pointsToImprove,
+        resumeSuggestions: result.analysisResult.resumeSuggestions,
+        matchScore: result.analysisResult.score.toString(),
+        createdAt: new Date(result.createdAt).toLocaleString('pt-BR'),
+        recruiterView: result.recruiterView,
+      };
+      return output;
     } finally {
       fs.unlink(file.path, (err) => {
-        if (err) {
+        if (err && err.code !== 'ENOENT') {
           console.error(`Erro ao remover o arquivo: ${file.path}`, err);
         }
       });

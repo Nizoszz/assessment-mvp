@@ -1,12 +1,41 @@
 import { Expose, Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsObject,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
-export class AnalyseResultResponseDto {
+export class PointToImprove {
   @Expose()
   @IsNotEmpty()
   @IsString({ message: 'Must be a string' })
-  classification: string;
+  description: string;
 
+  @Expose()
+  @IsNotEmpty()
+  @IsString({ message: 'Must be a string' })
+  studyRecommendation: string;
+}
+export class RecruiterView {
+  @Expose()
+  @IsNotEmpty()
+  @IsString({ message: 'Must be a string' })
+  alignmentView: string;
+
+  @Expose()
+  @IsNotEmpty()
+  @IsString({ message: 'Must be a string' })
+  misalignmentView: string;
+
+  @Expose()
+  @IsNotEmpty()
+  @IsString({ message: 'Must be a string' })
+  attentionView: string;
+}
+
+export class AnalyseResultResponseDto {
   @Expose()
   @IsNotEmpty()
   @IsArray({ message: 'Must be an array' })
@@ -35,16 +64,11 @@ export class AnalyseResultResponseDto {
   @IsNotEmpty()
   @IsString({ message: 'Must be a string' })
   createdAt: string;
-}
-
-export class PointToImprove {
-  @Expose()
-  @IsNotEmpty()
-  @IsString({ message: 'Must be a string' })
-  description: string;
 
   @Expose()
   @IsNotEmpty()
-  @IsString({ message: 'Must be a string' })
-  studyRecommendation: string;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => RecruiterView)
+  recruiterView: RecruiterView;
 }
