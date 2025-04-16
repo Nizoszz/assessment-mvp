@@ -1,0 +1,43 @@
+Carlos Cady
++55 (11) 00000-0000 | carlos.teste@email.com |
+
+RESUMO:
+Estudante de Análise de Dados, com experiência em Python, SQL e ferramentas de visualização como Power BI. Interessado em aplicar técnicas de análise e machine learning para transformar dados em insights estratégicos.
+
+HABILIDADES:
+
+Linguagens: Python, R, Java, JavaScript
+
+Ferramentas: Scikit-learn, Pandas, SQL, TensorFlow, Power BI, Docker
+
+Banco de Dados: MySQL, PostgreSQL, MongoDB
+
+Outros: Análise de dados, visualização de dados, ETL, Big Data
+
+EXPERIÊNCIA:
+
+Estagiário de Análise de Dados — CloudTech Solutions
+Mai 2023 - Out 2023
+
+Desenvolvimento de pipelines de dados para análise em AWS
+
+Criação de dashboards dinâmicos usando Power BI
+
+Análise e monitoramento de dados financeiros em tempo real
+
+Assistente de TI — Supermercado Boa Compra
+Jan 2019 - Jun 2020
+
+Suporte técnico e configuração de sistemas de rede
+
+Análise e otimização de processos internos no ERP da empresa
+
+Diagnóstico e manutenção de hardware e software
+
+FORMAÇÃO:
+
+Técnico em Análise de Sistemas — Instituto TechData
+Mar 2021 - Dez 2023
+
+Bootcamp em Ciência de Dados — Data Academy
+Jul 2024 - Dez 2024

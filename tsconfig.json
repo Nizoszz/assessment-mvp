@@ -16,6 +16,20 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@analysisModule/*": [
+        "./src/analysis/*"
+      ],
+      "@configModule/*": [
+        "./src/config/*"
+      ],
+      "@prismaModule/*": [
+        "./src/prisma/*"
+      ],
+      "@test/*": [
+        "./test/*"
+      ]
+    }
   }
 }
