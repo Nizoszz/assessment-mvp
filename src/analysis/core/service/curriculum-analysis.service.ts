@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ExternalAnalyseProcessing } from '../../../analysis/http/client/external-analyse-processing.client';
 import { AnalysisModel } from '../model/analysis.model';
 
@@ -16,7 +16,7 @@ export class CurriculumAnalysisService {
       resumeJobText,
     );
     if (!response) {
-      throw new Error('Falha na análise do currículo.');
+      throw new InternalServerErrorException('Falha na análise do currículo.');
     }
     const sanitizedOutput = this.sanitizeOutputText(response.analysis);
     const analysisCreated = AnalysisModel.create({
